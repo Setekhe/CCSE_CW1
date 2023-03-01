@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible">
+        <title>Home</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <article>
+
+        </article>
+
+        <script src="" async defer>
+            const lineBreak=document.createElement("br");
+            const carList=document.createElement("div");
+            carList.className="list";
+            const imageDiv=document.createElement("div");
+            imageDiv.className="icon-box";
+            carList.appendChild(imageDiv);
+            const viewImage=document.createElement("a");
+            imageDiv.appendChild(viewImage);
+            const carImage=document.createElement("img");
+            carImage.className="car-icon";
+            viewImage.appendChild(carImage);
+            const descDiv=document.createElement("div");
+            descDiv.className="description";
+            carList.appendChild(descDiv);
+            const carName=document.createElement("h4");
+            carName.className="car-name";
+            descDiv.appendChild(carName);
+            const description=document.createElement("p");
+            description.className="description";
+            descDiv.appendChild(description);
+            const purchaseDiv=document.createElement("div");
+            carList.appendChild(purchaseDiv);
+            const viewText=document.createElement("a");
+            viewText.textContent="View Car";
+            purchaseDiv.appendChild(viewText);
+            purchaseDiv.appendChild(lineBreak.cloneNode(true));
+            const financeButton=document.createElement("button");
+            financeButton.className="button-shop";
+            financeButton.textContent="Finance";
+            purchaseDiv.appendChild(financeButton);
+            purchaseDiv.appendChild(lineBreak.cloneNode(true));
+            const buyButton=document.createElement("button");
+            buyButton.className="button-shop";
+            buyButton.textContent="Buy";
+            purchaseDiv.appendChild(buyButton);
+            let genres = [];
+            init();
+            function init(){
+            /* document.getElementById("article").innerHTML="";
+             checked = 0;
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for(let q = 0; q < checkboxes.length; q++){
+                if(checkboxes[q].checked==true){
+                checked = 1;
+                break;
+                }
+            } */
+            for(let i = 1; i <= cars.length; i++){
+                let carId = i;
+                let car = cars.find((car) => car.id === carId);
+                //genres = movie.genre.split(', ');
+                //var check = "";
+                //for(let y = 0; y < genres.length; y++){
+                //check = document.getElementById(genres[y]);
+                if(check.checked||!checked){
+                    carImage.src = movie.image;
+                    title.textContent = movie.name;
+                    description.textContent = movie.description;
+                    viewText.href="/movie.html?id="+movie.id;
+                    viewImage.href="/movie.html?id="+movie.id;
+                    rentTime.id="days-to-rent-"+movie.id;
+                    rentButton.id="rent "+movie.id;
+                    document.getElementById("article").appendChild(carList.cloneNode(true));
+                    /* document.getElementById("rent "+movie.id).onclick = 
+                    function addToBasket() {
+                        if(document.getElementById("days-to-rent-" + movieId).value>0){
+                            // Get the basket from local storage, or just an empty array if it doesn't exist
+                            const basket = JSON.parse(localStorage.getItem("basket") ?? "[]");
+                            // Add the amount of days they want to rent
+                            movie.rentDays = parseInt(document.getElementById("days-to-rent-" + movieId).value);
+                            basket.push(movie);
+                            localStorage.setItem("basket", JSON.stringify(basket));
+                            buttonId = "rent "+movieId;
+                            document.getElementById(buttonId).textContent = "Added to Basket";
+                            setTimeout(swapText, 1500, buttonId);
+                        }else{
+                            document.getElementById("days-to-rent-" + movieId).value = 1;
+                            buttonId = "rent "+movieId;
+                            document.getElementById(buttonId).textContent = "Must be at least one day";
+                                setTimeout(swapText, 1500, buttonId);
+                        }
+                    } */
+                    break;
+                }
+                //}
+            }
+            }
+        </script>
+    </body>
+</html>
