@@ -7,9 +7,40 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link href="./styles/main.css" rel="stylesheet" />
     </head>
     <body>
-        
-        <script src="" async defer></script>
+    	<header>
+    		<h2 class="pageTitle">Car Trader</h2>
+    	</header>
+        <article style="border: 2px black solid; height: 92vh;">
+		<h1 class="car-name" id="car-title"></h1>
+		<div class="icon-box">
+			<img class="car-icon" id="car-image">
+		</div>
+		<h2 class="car-subtitle">Description: </h2>
+		<p id="car-description"></p>
+		<strong>Stock Left : </strong>
+		<span id="car-stock"></span>
+		<br>
+		<strong>Price : £</strong>
+		<span id="car-price"></span>
+		<br>
+		<br>
+		<button class="button-shop" style="top: 0px; margin-left: 10px;">Buy</button>	
+		<button class="button-shop" style="top: 0px; margin-left: 10px;">Finance</button>
+        </article>
+        <script src="stock.js"></script>
+        <script async defer>
+        	const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const carID = parseInt(urlParams.get("id"));
+		const car = cars.find((car) => car.id === carID);  
+		document.getElementById("car-title").textContent = car.car;
+		document.getElementById("car-image").src = car.image;
+		document.getElementById("car-description").textContent = car.description;
+		document.getElementById("car-stock").textContent = car.stock;
+		document.getElementById("car-price").textContent = car.price;
+        </script>
     </body>
 </html>

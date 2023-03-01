@@ -2,7 +2,7 @@ const cars = [
   {
     "id": 1,
     "car": "Bugatti Chiron",
-    "image": "/Images/BC.png",
+    "image": "./images/BC.png",
     "price": 3800000,
     "stock": 12,
     "description": "Goes very fast"
@@ -10,7 +10,7 @@ const cars = [
   {
     "id": 2,
     "car": "Bugatti La Voiture Noire",
-    "image": "/Images/BLVN.png",
+    "image": "./images/BLVN.png",
     "price": 16500000,
     "stock": 1,
     "description": "1 of a Kind"
@@ -18,7 +18,7 @@ const cars = [
   {
     "id": 3,
     "car": "Koenigsegg Jesko",
-    "image": "/Images/KJ.png",
+    "image": "./images/KJ.png",
     "price": "2850000",
     "stock": 3,
     "description": "A true mega car"
@@ -26,7 +26,7 @@ const cars = [
   {
     "id": 4,
     "car": "Nissan GTR",
-    "image": "/Images/NG.png",
+    "image": "./images/NG.png",
     "price": "43000",
     "stock": 58,
     "description": "Budget speed"
@@ -34,7 +34,7 @@ const cars = [
   {
     "id": 5,
     "car": "McLaren 12c",
-    "image": "/Images/MT.png",
+    "image": "./images/MT.png",
     "price": "68000",
     "stock": 42,
     "description": "Old but gold"
