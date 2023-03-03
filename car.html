@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible">
-        <title>Admin</title>
+        <title>Car</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -13,22 +13,29 @@
     	<header>
     		<h2 class="pageTitle">Car Trader</h2>
     	</header>
-        <article style="border: 2px black solid; height: 92vh;">
-		<h1 class="car-name" id="car-title"></h1>
-		<div class="icon-box">
-			<img class="car-icon" id="car-image">
+        <article style="border: 2px black solid; height: 91vh;">
+		<div class="view-divs" style="float: left;">
+			<h1 class="car-name" id="car-title"></h1>
+			<h2 class="car-subtitle">Description: </h2>
+			<p id="car-description"></p>
+			<strong>Stock Left : </strong>
+			<span id="car-stock"></span>
+			<br>
+			<strong>Price : £</strong>
+			<span id="car-price"></span>
+			<br>
+			<br>
+			<a id="buyButton" class="button button-shop" style="top: 0px; margin-left: 10px;">Buy</a>	
+			<br>
+			<a id="financeButton"class="button button-shop" style="top: 0px; margin-left: 10px;">Finance</a>
 		</div>
-		<h2 class="car-subtitle">Description: </h2>
-		<p id="car-description"></p>
-		<strong>Stock Left : </strong>
-		<span id="car-stock"></span>
-		<br>
-		<strong>Price : £</strong>
-		<span id="car-price"></span>
-		<br>
-		<br>
-		<button class="button-shop" style="top: 0px; margin-left: 10px;">Buy</button>	
-		<button class="button-shop" style="top: 0px; margin-left: 10px;">Finance</button>
+		<div class="view-divs" style="float: right;">
+			<div class="view-box">
+				<img class="view-car" id="car-image">
+			</div>
+		</div>
+		
+		
         </article>
         <script src="stock.js"></script>
         <script async defer>
@@ -41,6 +48,8 @@
 		document.getElementById("car-description").textContent = car.description;
 		document.getElementById("car-stock").textContent = car.stock;
 		document.getElementById("car-price").textContent = car.price;
+		document.getElementById("buyButton").href="/dealer.html?id="+car.id;
+		document.getElementById("financeButton").href="/finance.html?id="+car.id;
         </script>
     </body>
 </html>
