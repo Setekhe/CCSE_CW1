@@ -18,7 +18,7 @@
 
         </article>
 	<script src="stock.js"></script>
-        <script async defer>
+        <script>
             const lineBreak=document.createElement("br");
             const carList=document.createElement("div");
             carList.className="list";
@@ -42,20 +42,18 @@
             const purchaseDiv=document.createElement("div");
             purchaseDiv.className="purchase-div";
             carList.appendChild(purchaseDiv);
-            const viewButton=document.createElement("button");
-            viewButton.className="button-shop";
+            const viewButton=document.createElement("a");
+            viewButton.className="button button-shop";
             viewButton.textContent="View Car";
             purchaseDiv.appendChild(viewButton);
             purchaseDiv.appendChild(lineBreak.cloneNode(true));
-            purchaseDiv.appendChild(lineBreak.cloneNode(true));
-            const financeButton=document.createElement("button");
-            financeButton.className="button-shop";
+            const financeButton=document.createElement("a");
+            financeButton.className="button button-shop";
             financeButton.textContent="Finance";
             purchaseDiv.appendChild(financeButton);
             purchaseDiv.appendChild(lineBreak.cloneNode(true));
-            purchaseDiv.appendChild(lineBreak.cloneNode(true));
-            const buyButton=document.createElement("button");
-            buyButton.className="button-shop";
+            const buyButton=document.createElement("a");
+            buyButton.className="button button-shop";
             buyButton.textContent="Buy";
             purchaseDiv.appendChild(buyButton);
             let genres = [];
@@ -86,27 +84,10 @@
 		            viewButton.href="/car.html?id="+car.id;
 		            viewImage.href="/car.html?id="+car.id;
 		            buyButton.id="Buy "+car.car;
-		            buyButton.id="Finance "+car.car;
+		            buyButton.href="/dealer.html?id="+car.id;
+		            financeButton.id="Finance "+car.car;
+		            financeButton.href="/finance.html?id="+car.id;
 		            document.getElementById("article").appendChild(carList.cloneNode(true));
-		            /* document.getElementById("rent "+movie.id).onclick = 
-		            function addToBasket() {
-		                if(document.getElementById("days-to-rent-" + movieId).value>0){
-		                    // Get the basket from local storage, or just an empty array if it doesn't exist
-		                    const basket = JSON.parse(localStorage.getItem("basket") ?? "[]");
-		                    // Add the amount of days they want to rent
-		                    movie.rentDays = parseInt(document.getElementById("days-to-rent-" + movieId).value);
-		                    basket.push(movie);
-		                    localStorage.setItem("basket", JSON.stringify(basket));
-		                    buttonId = "rent "+movieId;
-		                    document.getElementById(buttonId).textContent = "Added to Basket";
-		                    setTimeout(swapText, 1500, buttonId);
-		                }else{
-		                    document.getElementById("days-to-rent-" + movieId).value = 1;
-		                    buttonId = "rent "+movieId;
-		                    document.getElementById(buttonId).textContent = "Must be at least one day";
-		                        setTimeout(swapText, 1500, buttonId);
-		                }
-		            } */
 		            
 		    }
             }
