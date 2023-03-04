@@ -7,11 +7,118 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link href="./styles/main.css" rel="stylesheet" />
     </head>
-    <body>
+    <body style="position: relative;">
         <header>
     		<h2 class="pageTitle">Car Trader</h2>
     	</header>
-        <script src="" async defer></script>
+        <article id="artcl" class="article">
+        <div class="view-divs" style="float: left;">
+            <form>
+                <label for="fname">First name:</label>
+                <input type="text" id="fname" name="fname" placeholder="John">
+                <br>
+                <br>
+                <label for="lname">Last name:</label>
+                <input type="text" id="lname" name="lname" placeholder="Smith">
+                <br>
+                <br>
+                <label for="age">Age:</label>
+                <input type="text" id="age" name="age" placeholder="20">
+                <br>
+                <br>
+                <label for="gender">Gender:</label>
+                <input type="text" id="gender" name="gender" placeholder="Male">
+                <br>
+                <br>
+                <label for="tax">Income After Tax:</label>
+                <input type="text" id="tax" name="tax" placeholder="100000">
+                <br>
+                <br>
+                <label for="empyr">Years of Consecutive Employment:</label>
+                <input type="text" id="empyr" name="empyr" placeholder="3">
+                <br>
+                <br>
+                <label for="empname">Employer :</label>
+                <input type="text" id="empname" name="empname" placeholder="Tesco">
+                <br>
+                <br>
+                
+            </form> 
+        </div>
+        <div class="view-divs" style="float: right; height: 30%;">
+            <form>
+                <label for="add1">Address Line 1:</label>
+                <input type="text" id="add1" name="add1" placeholder="1 Street Road">
+                <br>
+                <br>
+                <label for="add2">Address Line 2:</label>
+                <input type="text" id="add2" name="add2" placeholder="Ravenswood">
+                <br>
+                <br>
+                <label for="add3">Address Line 3:</label>
+                <input type="text" id="add3" name="add3" placeholder="Ipswich">
+                <br>
+                <br>
+                <label for="add4">Address Line 4:</label>
+                <input type="text" id="add4" name="add4" placeholder="Suffolk">
+                <br>
+                <br>
+                <label for="postcode">Postcode:</label>
+                <input type="text" id="postcode" name="postcode" placeholder="SW1A 2AB">
+            </form>
+            <br>
+            <button id="subbut" onclick="submitBut()" class="button-shop">Submit</button>
+        </div>
+        <div class="view-divs" style="float: right; height: 60%;">
+            <div class="view-divs" style="float: left;">
+                <h1 class="car-name" id="car-title"></h1>
+                <h2 class="car-subtitle">Description: </h2>
+                <p id="car-description"></p>
+                <strong>Stock Left : </strong>
+                <span id="car-stock"></span>
+                <br>
+                <strong>Price : £</strong>
+                <span id="car-price"></span>
+            </div>
+            <div class="view-divs" style="float: right;">
+                <div class="view-box">
+                    <img class="view-car" id="car-image">
+                </div>
+            </div>
+        </div>
+        </article>
+        <div class="popup" id="popop">
+            <div class="centered-text">
+                Your finance request has been sent, we will repsond as soon as we can. Thank you for shopping with car trader!
+            </div>
+            <a class="button button-shop" href="index.html" style="right:2.5%; bottom: 5%; position: absolute;">
+                Return to Home
+            </a>
+        </div>
+        <script src="stock.js"></script>
+        <script async defer>
+        const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const carID = parseInt(urlParams.get("id"));
+		const car = cars.find((car) => car.id === carID);  
+		document.getElementById("car-title").textContent = car.car;
+		document.getElementById("car-image").src = car.image;
+		document.getElementById("car-description").textContent = car.description;
+		document.getElementById("car-stock").textContent = car.stock;
+		document.getElementById("car-price").textContent = car.price;
+        function submitBut(){
+            document.getElementById("subbut").disabled=true;
+            var inplist = document.querySelectorAll('input');
+            inplist.forEach(element => {
+                element.disabled=true;
+            });
+            var artcl = document.getElementById("artcl");
+            artcl.classList.toggle("not-show");
+            var artcl = document.getElementById("popop");
+            artcl.classList.toggle("popup-show");
+        }
+        </script>
     </body>
 </html>
