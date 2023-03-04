@@ -1,6 +1,4 @@
 try {
-    $pythonVersion = (Get-Command -ErrorAction Stop python).Version.Major
-
     Write-Output "Starting web server on port 8080"
     Write-Output "You can visit the website at http://localhost:8080/index.html"
     Write-Output ""
