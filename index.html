@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
-        <link href="./styles/main.css" rel="stylesheet" />
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
     </head>
     
     <body>
@@ -17,7 +17,6 @@
         <article id="article">
 
         </article>
-	<script src="stock.js"></script>
         <script>
             const lineBreak=document.createElement("br");
             const carList=document.createElement("div");
@@ -56,41 +55,30 @@
             buyButton.className="button button-shop";
             buyButton.textContent="Buy";
             purchaseDiv.appendChild(buyButton);
-            let genres = [];
-            init();
-            function init(){
-            /* document.getElementById("article").innerHTML="";
-             checked = 0;
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            for(let q = 0; q < checkboxes.length; q++){
-                if(checkboxes[q].checked==true){
-                checked = 1;
-                break;
+            async function getJSON(){
+			return await fetch("/stock.json")
+				.then((response) => response.json())
+				.then((data) => {return data;})
+			}
+            async function init(){
+                var cars = await this.getJSON();
+                for(let i = 1; i <= cars.length; i++){
+                    let carId = i;
+                    let car = cars.find((car) => car.id === carId);
+                        carImage.src = car.image;
+                        carName.textContent = car.car;
+                        description.textContent = car.description;
+                        viewButton.href="/car?id="+car.id;
+                        viewImage.href="/car?id="+car.id;
+                        buyButton.id="Buy "+car.car;
+                        buyButton.href="/dealer?id="+car.id;
+                        financeButton.id="Finance "+car.car;
+                        financeButton.href="/finance?id="+car.id;
+                        document.getElementById("article").appendChild(carList.cloneNode(true));
+                        
                 }
-            } */
-		    for(let i = 1; i <= cars.length; i++){
-		    	console.log(cars.length);
-		    	console.log(i);
-		        let carId = i;
-		        let car = cars.find((car) => car.id === carId);
-		        //genres = movie.genre.split(', ');
-		        //var check = "";
-		        //for(let y = 0; y < genres.length; y++){
-		        //check = document.getElementById(genres[y]);
-		        //if(check.checked||!checked){
-		            carImage.src = car.image;
-		            carName.textContent = car.car;
-		            description.textContent = car.description;
-		            viewButton.href="/car.html?id="+car.id;
-		            viewImage.href="/car.html?id="+car.id;
-		            buyButton.id="Buy "+car.car;
-		            buyButton.href="/dealer.html?id="+car.id;
-		            financeButton.id="Finance "+car.car;
-		            financeButton.href="/finance.html?id="+car.id;
-		            document.getElementById("article").appendChild(carList.cloneNode(true));
-		            
-		    }
             }
+            init();
         </script>
     </body>
 </html>

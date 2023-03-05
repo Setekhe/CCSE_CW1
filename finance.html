@@ -6,8 +6,7 @@
         <title>Finance</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <link href="./styles/main.css" rel="stylesheet" />
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
     </head>
     <body style="position: relative;">
         <header>
@@ -25,7 +24,7 @@
                 <br>
                 <br>
                 <label for="age">Age:</label>
-                <input type="text" id="age" name="age" placeholder="20">
+                <input type="number" id="age" name="age" placeholder="20">
                 <br>
                 <br>
                 <label for="gender">Gender:</label>
@@ -33,11 +32,11 @@
                 <br>
                 <br>
                 <label for="tax">Income After Tax:</label>
-                <input type="text" id="tax" name="tax" placeholder="100000">
+                <input type="number" id="tax" name="tax" placeholder="100000">
                 <br>
                 <br>
                 <label for="empyr">Years of Consecutive Employment:</label>
-                <input type="text" id="empyr" name="empyr" placeholder="3">
+                <input type="number" id="empyr" name="empyr" placeholder="3">
                 <br>
                 <br>
                 <label for="empname">Employer :</label>
@@ -47,7 +46,7 @@
                 
             </form> 
         </div>
-        <div class="view-divs" style="float: right; height: 30%;">
+        <div class="view-divs" style="float: right; height: 250px;">
             <form>
                 <label for="add1">Address Line 1:</label>
                 <input type="text" id="add1" name="add1" placeholder="1 Street Road">
@@ -71,7 +70,7 @@
             <br>
             <button id="subbut" onclick="submitBut()" class="button-shop">Submit</button>
         </div>
-        <div class="view-divs" style="float: right; height: 60%;">
+        <div class="view-divs" style="float: right; height: 50%;">
             <div class="view-divs" style="float: left;">
                 <h1 class="car-name" id="car-title"></h1>
                 <h2 class="car-subtitle">Description: </h2>
@@ -90,35 +89,46 @@
         </div>
         </article>
         <div class="popup" id="popop">
-            <div class="centered-text">
-                Your finance request has been sent, we will repsond as soon as we can. Thank you for shopping with car trader!
+            <div class="centered-text" id="subtext">
+                
             </div>
-            <a class="button button-shop" href="index.html" style="right:2.5%; bottom: 5%; position: absolute;">
+            <a class="button button-shop" href="/" style="right:2.5%; bottom: 5%; position: absolute;">
                 Return to Home
             </a>
         </div>
-        <script src="stock.js"></script>
         <script async defer>
-        const queryString = window.location.search;
-		const urlParams = new URLSearchParams(queryString);
-		const carID = parseInt(urlParams.get("id"));
-		const car = cars.find((car) => car.id === carID);  
-		document.getElementById("car-title").textContent = car.car;
-		document.getElementById("car-image").src = car.image;
-		document.getElementById("car-description").textContent = car.description;
-		document.getElementById("car-stock").textContent = car.stock;
-		document.getElementById("car-price").textContent = car.price;
-        function submitBut(){
-            document.getElementById("subbut").disabled=true;
-            var inplist = document.querySelectorAll('input');
-            inplist.forEach(element => {
-                element.disabled=true;
-            });
-            var artcl = document.getElementById("artcl");
-            artcl.classList.toggle("not-show");
-            var artcl = document.getElementById("popop");
-            artcl.classList.toggle("popup-show");
-        }
+            async function getJSON(url){
+                return await fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {return data;})
+            }
+            async function init(){
+                var cars = await this.getJSON("/stock.json");
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const carID = parseInt(urlParams.get("id"));
+                const car = cars.find((car) => car.id === carID);  
+                document.getElementById("car-title").textContent = car.car;
+                document.getElementById("car-image").src = car.image;
+                document.getElementById("car-description").textContent = car.description;
+                document.getElementById("car-stock").textContent = car.stock;
+                document.getElementById("car-price").textContent = car.price;
+            }
+            async function submitBut(){
+                var applications = await this.getJSON("/applications.json")
+                document.getElementById("subbut").disabled=true;
+                var inplist = document.querySelectorAll('input');
+                inplist.forEach(element => {
+                    element.disabled=true;
+                });
+                var artcl = document.getElementById("artcl");
+                artcl.classList.toggle("not-show");
+                document.getElementById("subtext").textContent = "Your finance request has been sent, we will repsond as soon as we can. Your ID is: "+ applications.length+
+                ". Thank you for shopping with car trader!"
+                var artcl = document.getElementById("popop");
+                artcl.classList.toggle("popup-show");
+            }
+            init();
         </script>
     </body>
 </html>

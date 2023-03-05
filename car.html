@@ -7,13 +7,13 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
-        <link href="./styles/main.css" rel="stylesheet" />
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
     	<header>
     		<h2 class="pageTitle">Car Trader</h2>
     	</header>
-        <article style="border: 2px black solid; height: 91vh;">
+        <article class="article">
 		<div class="view-divs" style="float: left;">
 			<h1 class="car-name" id="car-title"></h1>
 			<h2 class="car-subtitle">Description: </h2>
@@ -37,20 +37,28 @@
 		
 		
         </article>
-        <script src="stock.js"></script>
-        <script async defer>
-        	const queryString = window.location.search;
-		const urlParams = new URLSearchParams(queryString);
-		const carID = parseInt(urlParams.get("id"));
-		const car = cars.find((car) => car.id === carID);  
-		document.getElementById("car-title").textContent = car.car;
-		document.getElementById("car-image").src = car.image;
-		document.getElementById("car-description").textContent = car.description;
-		document.getElementById("car-stock").textContent = car.stock;
-		document.getElementById("car-price").textContent = car.price;
-		document.getElementById("buyButton").href="/dealer.html?id="+car.id;
-		document.getElementById("financeButton").href="/finance.html?id="+car.id;
-		document.title = car.car;
+		<script async defer>
+			async function getJSON(){
+			return await fetch("/stock.json")
+				.then((response) => response.json())
+				.then((data) => {return data;})
+			}
+			async function init(){
+				var cars = await this.getJSON();
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const carID = parseInt(urlParams.get("id"));
+				const car = cars.find((car) => car.id === carID);  
+				document.getElementById("car-title").textContent = car.car;
+				document.getElementById("car-image").src = car.image;
+				document.getElementById("car-description").textContent = car.description;
+				document.getElementById("car-stock").textContent = car.stock;
+				document.getElementById("car-price").textContent = car.price;
+				document.getElementById("buyButton").href="/dealer?id="+car.id;
+				document.getElementById("financeButton").href="/finance?id="+car.id;
+				document.title = car.car;
+			}
+			init();
         </script>
     </body>
 </html>

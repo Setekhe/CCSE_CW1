@@ -1,0 +1,77 @@
+[
+    {
+        "carid": 1,
+        "date": "09/03/2023",
+        "quantity": 200
+    },
+    {
+        "carid": 2,
+        "date": "09/03/2023",
+        "quantity": 12
+    },
+    {
+        "carid": 3,
+        "date": "09/03/2023",
+        "quantity": 342
+    },
+    {
+        "carid": 4,
+        "date": "09/03/2023",
+        "quantity": 53
+    },
+    {
+        "carid": 5,
+        "date": "09/03/2023",
+        "quantity": 22
+    },
+    {
+        "carid": 1,
+        "date": "08/03/2023",
+        "quantity": 165
+    },
+    {
+        "carid": 2,
+        "date": "08/03/2023",
+        "quantity": 456
+    },
+    {
+        "carid": 3,
+        "date": "08/03/2023",
+        "quantity": 123
+    },
+    {
+        "carid": 4,
+        "date": "08/03/2023",
+        "quantity": 27
+    },
+    {
+        "carid": 5,
+        "date": "08/03/2023",
+        "quantity": 879
+    },
+    {
+        "carid": 1,
+        "date": "07/03/2023",
+        "quantity": 213
+    },
+    {
+        "carid": 2,
+        "date": "07/03/2023",
+        "quantity": 342
+    },
+    {
+        "carid": 3,
+        "date": "07/03/2023",
+        "quantity": 562
+    },
+    {
+        "carid": 4,
+        "date": "07/03/2023",
+        "quantity": 12
+    },
+    {
+        "carid": 5,
+        "date": "07/03/2023",
+        "quantity": 32
+    }
+]

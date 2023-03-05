@@ -6,12 +6,80 @@
         <title>Admin</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
+    <body style="visibility:hidden;" id="body">
         <header>
     		<h2 class="pageTitle">Car Trader</h2>
     	</header>
-        <script src="" async defer></script>
+        <article class="article" id="article">
+            <div class="view-divs" style="float:left;">
+                <h1>Pending Applications</h1>
+                <ul id="list" class="list-outer">
+
+                </ul>
+            </div>
+            <div class="view-divs" style="float:right;">
+                <h1>Stock Change</h1>
+            </div>
+        </article>
+        <div class="popup popup-show" id="popop">
+            <div class="centered-text" id="subtext">
+                <form>
+                    <label for="usern">Username:</label>
+                    <input type="text" id="usern" name="usern" placeholder="Admin">
+                    <br>
+                    <br>
+                    <label for="passw">Password:</label>
+                    <input type="password" id="passw" name="passw" placeholder="Password">
+                    <br>
+                    <br>
+                    <label for="mfa">MFA Token:</label>
+                    <input type="text" id="mfa" name="mfa" placeholder="1234">
+            </div>
+            <br>
+            <button type="button" class="button-shop" onclick="loginBut()" style="right:2.5%; bottom: 5%; position: absolute;">
+                asdasd
+            </button>
+        </div>
+        <script async defer>
+            const listElement=document.createElement("li");
+            listElement.className = "list-el";
+            const listDiv=document.createElement("div");
+            const nameDiv=document.createElement("div");
+            nameDiv.style="float: left; padding: 0;"
+            nameDiv.className = "view-divs"
+            const appLink=document.createElement("a");
+            appLink.style="float: right; padding: 0;"
+            appLink.className = "view-divs"
+            listElement.appendChild(listDiv);
+            listDiv.appendChild(nameDiv);
+            listDiv.appendChild(appLink);
+            async function getJSON(url){
+                return await fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {return data;})
+            }
+            async function init(){
+                var applications = await getJSON("/applications.json")
+                applications.forEach(app => {
+                    console.log(app)
+                    if(app.approval == false){
+                        nameDiv.textContent = app.first + " " + app.last;
+                        appLink.href = "/application?id="+app.id;
+                        appLink.textContent = "Click To View";
+                        document.getElementById("list").appendChild(listElement.cloneNode(true))
+                        console.log(app.id);
+                    }
+                });
+            }
+            async function loginBut(){
+                var artcl = document.getElementById("popop");
+                artcl.classList.toggle("popup-show");
+                document.getElementById("body").style = "visibility: visible"
+                init()
+            }
+            
+        </script>
     </body>
 </html>
