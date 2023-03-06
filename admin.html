@@ -14,13 +14,27 @@
     	</header>
         <article class="article" id="article">
             <div class="view-divs" style="float:left;">
-                <h1>Pending Applications</h1>
-                <ul id="list" class="list-outer">
-
-                </ul>
+                <div style="height: 6%">
+                    <h1>Pending Applications</h1>
+                </div>
+                <div style="height: 94%">
+                    <ul id="listap" class="list-outer">
+                        
+                    </ul>
+                </div> 
             </div>
             <div class="view-divs" style="float:right;">
-                <h1>Stock Change</h1>
+                <div style="height: 6%">
+                    <h1>Stock Changes</h1>
+                </div>
+                <div style="height: 47%">
+                    <canvas id="myChart" style="width:100%;height:100%;"></canvas>
+                </div>
+                <div style="height: 47%">
+                    <ul id="listock" class="list-outer">
+                        
+                    </ul>
+                </div>
             </div>
         </article>
         <div class="popup popup-show" id="popop">
@@ -36,12 +50,17 @@
                     <br>
                     <label for="mfa">MFA Token:</label>
                     <input type="text" id="mfa" name="mfa" placeholder="1234">
+                    <br>
+                    Check your registered email for the MFA Token
             </div>
             <br>
             <button type="button" class="button-shop" onclick="loginBut()" style="right:2.5%; bottom: 5%; position: absolute;">
-                asdasd
+                Login
             </button>
-        </div>
+        </div>     
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+        </script>
         <script async defer>
             const listElement=document.createElement("li");
             listElement.className = "list-el";
@@ -52,26 +71,76 @@
             const appLink=document.createElement("a");
             appLink.style="float: right; padding: 0;"
             appLink.className = "view-divs"
+            const stockamount=document.createElement("div");
+            stockamount.style="float: right; padding: 0;"
+            stockamount.className = "view-divs"
             listElement.appendChild(listDiv);
             listDiv.appendChild(nameDiv);
             listDiv.appendChild(appLink);
+            //get json data function
             async function getJSON(url){
                 return await fetch(url)
                     .then((response) => response.json())
                     .then((data) => {return data;})
             }
+            //init function
             async function init(){
                 var applications = await getJSON("/applications.json")
+                var stock = await getJSON("/stock.json")
+                var sales = await getJSON("/sales.json")
+                //lists applications
                 applications.forEach(app => {
-                    console.log(app)
                     if(app.approval == false){
                         nameDiv.textContent = app.first + " " + app.last;
                         appLink.href = "/application?id="+app.id;
                         appLink.textContent = "Click To View";
-                        document.getElementById("list").appendChild(listElement.cloneNode(true))
-                        console.log(app.id);
+                        document.getElementById("listap").appendChild(listElement.cloneNode(true))
                     }
                 });
+                //swaps list creator
+                listDiv.removeChild(appLink);
+                listDiv.appendChild(stockamount);
+                //stors id to name of cars
+                var caridname = new Array(stock.length);
+                //generates list of stock
+                stock.forEach(car => {
+                    caridname[car.id-1]=car.car
+                    nameDiv.textContent = car.car;
+                    stockamount.textContent="Stock Remaining: "+car.stock;
+                    document.getElementById("listock").appendChild(listElement.cloneNode(true))
+                });
+                //creates chart
+                var daysRep=[];
+                var daysUn = new Set();
+                var carsales=[];
+                var arr=[];
+                var colours = ["aqua", "black", "blue", "fuchsia", "grey", "green", "lime", "maroon", "navy", "olive", "purple", "red", "silver", "teal", "white", "yellow"];
+                sales.forEach(sale => {
+                    daysUn.add(sale.date);
+                    if(!carsales[sale.carid-1]){
+                        carsales.push(Object.create(null));
+                        carsales[sale.carid-1].label=caridname[sale.carid-1];
+                        carsales[sale.carid-1].data=[];
+                        carsales[sale.carid-1].fill=false;
+                        carsales[sale.carid-1].borderColor=colours[sale.carid-1];
+                    }
+                    carsales[sale.carid-1].data.push(sale.quantity);
+                });
+                daysRep = Array.from(daysUn);
+                var myChart = new Chart("myChart", {
+                    type: "line", 
+                    data: {
+                        labels: daysRep,
+                        datasets: carsales
+                    },
+                    options: {
+                        title: {
+                            display: true, text: "Sales"
+                        },
+                    }
+                });
+                
+                
             }
             async function loginBut(){
                 var artcl = document.getElementById("popop");
