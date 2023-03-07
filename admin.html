@@ -40,6 +40,8 @@
         <div class="popup popup-show" id="popop">
             <div class="centered-text" id="subtext">
                 <form>
+                    <div id="Error" style="color:red;"></div>
+                    <br>
                     <label for="usern">Username:</label>
                     <input type="text" id="usern" name="usern" placeholder="Admin">
                     <br>
@@ -51,7 +53,7 @@
                     <label for="mfa">MFA Token:</label>
                     <input type="text" id="mfa" name="mfa" placeholder="1234">
                     <br>
-                    Check your registered email for the MFA Token
+                    (Check your registered email for the MFA Token.)
             </div>
             <br>
             <button type="button" class="button-shop" onclick="loginBut()" style="right:2.5%; bottom: 5%; position: absolute;">
@@ -138,15 +140,37 @@
                             display: true, text: "Sales"
                         },
                     }
-                });
-                
-                
+                });             
             }
-            async function loginBut(){
-                var artcl = document.getElementById("popop");
-                artcl.classList.toggle("popup-show");
-                document.getElementById("body").style = "visibility: visible"
-                init()
+            async function loginBut(){  
+                var success = await fetch("/login",{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',   
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "User": document.getElementById("usern").value,
+                        "Pass" : document.getElementById("passw").value,
+                        "MFA" : document.getElementById("mfa").value
+                    }),
+                })
+                .then((response) => response.text())
+                .then((data) => {return data;});
+                if(success == "true"){
+                    var artcl = document.getElementById("popop");
+                    artcl.classList.toggle("popup-show");
+                    document.getElementById("body").style = "visibility: visible"
+                    init();
+                }
+                if(success == "MFA"){
+                    document.getElementById("Error").textContent="MFA token is wrong. Please check your email for your MFA token."
+                    
+                }
+                if(success == "UP"){
+                    document.getElementById("Error").textContent="Username or password wrong. Please re-enter a correct combination."
+                }
+                
             }
             
         </script>

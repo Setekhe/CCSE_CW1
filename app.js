@@ -1,6 +1,7 @@
 const express = require("express");
-
+const fs = require('fs');
 const app = express();
+app.use(express.json())
 app.use(express.static(__dirname + '/public'));
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
@@ -29,6 +30,34 @@ app.get("/:json.json", function (req, res) {
 app.get("/images/:image.png", function (req, res) {
     res.sendFile(__dirname + "/images/"+req.params['image']+".png");
 });
+app.post("/login",function (req, res){
+    var details = req.body;
+    let admins =JSON.parse(fs.readFileSync('./admins.json','utf8', (err, data) => {
+        if (err) {
+          console.error("err");
+        }
+    }));
+    var up=false;
+    for (const admin of admins) {
+        if(admin.username == details.User && admin.password == details.Pass)
+        {
+            if(admin.mfa == details.MFA){
+                res.send('true');
+                up=true;
+                break;
+            }else{
+                res.send('MFA');
+                up=true;
+                break;
+            }
+        }
+    }if(!up){
+        res.send('UP');
+    }
+    
+    
+})
 app.listen(8080, function () {
   console.log("Server is running on http://localhost:8080/");
 });
+

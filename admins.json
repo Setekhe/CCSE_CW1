@@ -1,0 +1,17 @@
+[
+    {
+        "username":"Admin",
+        "password":"password",
+        "mfa":"1234"
+    },
+    {
+        "username":"John",
+        "password":"BigSilly",
+        "mfa":"2131"
+    },
+    {
+        "username":"Alexi",
+        "password":"RiRi95!",
+        "mfa":"1843"
+    }
+]
