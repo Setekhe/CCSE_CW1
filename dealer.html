@@ -7,11 +7,82 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
     </head>
     <body>
         <header>
-    		<h2 class="pageTitle">Car Trader</h2>
+    		<h2 class="pageTitle">Global Finance</h2>
     	</header>
-        <script src="" async defer></script>
+        <article class="article">
+            <div id="map" style="height:100%;"></div>
+        </article>
+        <script async defer>
+            function storePosition(position) {
+                return position;
+            }
+            function distance(lat1, lon1, lat2, lon2) {
+            if ((lat1 == lat2) && (lon1 == lon2)) {
+                return 0;
+            }
+            else {
+                var radlat1 = Math.PI * lat1/180;
+                var radlat2 = Math.PI * lat2/180;
+                var theta = lon1-lon2;
+                var radtheta = Math.PI * theta/180;
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                if (dist > 1) {
+                    dist = 1;
+                }
+                dist = Math.acos(dist);
+                dist = dist * 180/Math.PI;
+                dist = dist * 60 * 1.1515;
+                dist = dist * 1.609344 //converts to km
+                return dist;
+            }
+            }
+            async function getJSON(url){
+                return await fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {return data;});
+            }
+            let getLocationPromise = new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        console.log(position)
+                        resolve({position})
+                    })
+                }
+            )
+            async function init(){
+                var userpos;
+                await getLocationPromise.then((location) => {
+                    userpos=(location.position.coords)
+                })
+                var dealerships = await getJSON("/dealerships.json");
+                console.log(userpos)
+                var closest;
+                var closestdist = 10000000;
+                dealerships.forEach(dealer => {
+                    dist=distance(userpos.latitude,userpos.longitude,dealer.lat,dealer.lng);
+                    if(dist<closestdist){
+                        closest = dealer;
+                        closestdist = dist;
+                    }
+                });
+                console.log(closest)
+                var map = L.map('map').setView([closest.lat, closest.lng], 13);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    minZoom: 8,
+                    maxZoom: 15,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                var marker = L.marker([closest.lat, closest.lng]).addTo(map);
+            }
+            init();
+        </script>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
     </body>
 </html>

@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 const util = require("util");
 const multer = require("multer");
-
+const path = require('path');
 
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
@@ -126,13 +126,17 @@ app.get("/download/:id/:file",function (req, res){
 
 
 /////////////////////// Middleware Upload
-var upload = multer({ dest: './application_files/0/'});
-app.post("/upload/:id", upload.array('filesarr'),function (req, res){
-    console.log(req.body);
-    console.log(typeof req.body.filesarr);
-    upload.array(req.body.filesarr)
-    //upload = multer({ dest: './application_files/0/'})
-   res.send('success');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join('./application_files/'+req.params['id']+'/'));
+    },
+    filename: function (req, file, cb){
+        cb(null, file.originalname);
+    }
+}); 
+let upload = multer({storage: storage})
+app.post("/upload/:id", upload.array('files'),function (req, res){
+   res.end();
 } ,);
   
 ////////////////starts the server
