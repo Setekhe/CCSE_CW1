@@ -83,41 +83,60 @@
                         <h2 id="status">Files: </h2>
                     </div>
                     <div class="view-divs" style="float: right;">
-                        <form id="upform" enctype="multipart/form-data">
-                            <label for="file">Choose file to upload</label>
-                            <input type="file" id="file-in" name="filesarr" multiple />
-                            <button onclick="upload()">Submit</button>
-                        </form>
+                            <!--<button>Submit</button>-->
                     </div>
                 </div>
                 <ul id="listap" class="list-outer">
                 </ul>
             </div>
         </article>
-        <div class="popup popup-show" id="popop">
-            <div class="centered-text" id="subtext">
-                <form>
-                    <div id="Error" style="color:red;"></div>
-                    <br>
-                    <label for="id">ID Number:</label>
-                    <input type="text" id="usern" name="usern" placeholder="10">
-                    <br>
-                    <br>
-                    <label for="passw">Password:</label>
-                    <input type="password" id="passwin" name="passw" placeholder="Password">
-            </div>
-            <br>
-            <button type="button" class="button-shop" onclick="loginBut()" style="right:2.5%; bottom: 5%; position: absolute;">
-                Login
-            </button>
-        </div>  
         <script async defer>
             async function getJSON(url){
                 return await fetch(url)
                     .then((response) => response.json())
                     .then((data) => {return data;});
             }
-            async function init(applicationDetails,filelist){
+            async function init(){
+                document.getElementById("body").style = "visibility: visible";
+                const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const userID = parseInt(urlParams.get("id"));
+                const pw = (urlParams.get("pw"))
+                var filelist;
+                var applicationDetails = await fetch("/loginuser",{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',   
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "ID": userID,
+                        "Pass" : pw
+                    }),
+                })
+                .then((response) => response.text())
+                .then((data) => {return data;});
+                console.log(applicationDetails)
+                if(applicationDetails){
+                    filelist = await fetch("/filelist",{
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',   
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "ID": userID,
+                            "Pass" : pw
+                        }),
+                    })
+                    .then((response) => response.text())
+                    if(filelist != ""){
+                        filelist = filelist.replaceAll('[','').replaceAll(']','').replaceAll('"','').split(',');
+                    }else{
+                        filelist = ""
+                    }
+                    
+                };
                 const listElement=document.createElement("li");
                 listElement.className = "list-el";
                 const listDiv=document.createElement("div");
@@ -152,80 +171,30 @@
                 document.getElementById("car-description").textContent = car.description;
                 document.getElementById("car-stock").textContent = car.stock;
                 document.getElementById("car-price").textContent = car.price;
-                filelist.forEach(file => {
-                    fileDiv.textContent = file;
-                    fileDiv.style="padding: 0px;";
-                    dlButton.id= "Download"+file;
-                    document.getElementById("listap").appendChild(listElement.cloneNode(true));
-                });
-                filelist.forEach(file => {
-                    document.getElementById(("Download"+file)).onclick=function downloader(){download(file)};
-                });
-                var form = document.getElementById("upform");
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault()
-                    upload()
-                })
+                console.log("filelist")
+                console.log(filelist)
+                console.log("filelist")
+                if(filelist != ""){
+                    filelist.forEach(file => {
+                        fileDiv.textContent = file;
+                        fileDiv.style=" padding: 0px;";
+                        dlButton.id= "Download"+file;
+                        document.getElementById("listap").appendChild(listElement.cloneNode(true));
+                    });
+                    filelist.forEach(file => {
+                        document.getElementById(("Download"+file)).onclick=function downloader(){download(file)};
+                    });
+                }else{
+                        fileDiv.textContent = "No files have been uploaded yet.";
+                        fileDiv.style="padding: 0px;";
+                        listDiv.removeChild(dlButton);
+                        document.getElementById("listap").appendChild(listElement.cloneNode(true));
+                }
             }
             async function download(file){
                 window.open(("/download/"+(document.getElementById("usern").value)+"/"+file));
             }
-            const upload = async () => {
-                const myFiles = document.getElementById('file-in');
-                console.log(myFiles);
-                const formData = new FormData()
-                for(let i =0; i < myFiles.files.length; i++) {
-                    formData.append("files", myFiles.files[i]);
-                }
-                const options ={
-                    method: 'POST',
-                    body: formData
-                };
-                if (options && options.headers) {
-                    delete options.headers['Content-Type'];
-                }
-                fetch(('/upload/'+document.getElementById("usern").value), options);
-
-            }
-            async function loginBut(){
-                var applicationDetails = await fetch("/loginuser",{
-                    method: 'POST',
-                    headers: {
-                    'Accept': 'application/json',   
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "ID": document.getElementById("usern").value,
-                        "Pass" : document.getElementById("passwin").value
-                    }),
-                })
-                .then((response) => response.text())
-                .then((data) => {return data;});
-                if(!applicationDetails == "UP"){
-                    console.log("err");
-                }else if(applicationDetails == "UP"){
-                    document.getElementById("Error").textContent="ID or password wrong. Please re-enter a correct combination.";
-                }else if(applicationDetails){
-                    var artcl = document.getElementById("popop");
-                    artcl.classList.toggle("popup-show");
-                    document.getElementById("body").style = "visibility: visible"
-                    var filelist = await fetch("/filelist",{
-                        method: 'POST',
-                        headers: {
-                        'Accept': 'application/json',   
-                        'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            "ID": document.getElementById("usern").value,
-                            "Pass" : document.getElementById("passwin").value
-                        }),
-                    })
-                    .then((response) => response.text())
-                    .then((data) => {return data;});
-                    filelist = filelist.replaceAll('[','').replaceAll(']','').replaceAll('"','').split(',');
-                    init(applicationDetails, filelist);
-                };
-            }
+            init();
         </script>
     </body>
 </html>

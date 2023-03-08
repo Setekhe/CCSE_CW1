@@ -10,6 +10,11 @@
     </head>
     <body style="visibility:hidden;" id="body">
         <header>
+            <div class="centered-el-left">
+                <a href="/"><img class = "imgbut" src="/images/homebut.png"></a>
+                <a href="/application"><img class = "imgbut" src="/images/applibut.png" ></a>
+                <a href="/admin"><img class = "imgbut" src="/images/adminbut.png" ></a>
+            </div>
     		<h2 class="pageTitle">Global Finance</h2>
     	</header>
         <article class="article" id="article">
@@ -93,10 +98,9 @@
                 //lists applications
                 console.log(applications);
                 applications.forEach(app => {
-                    console.log(app.approval);
-                    if(app.approval == "pending"){
+                    if(app.approval == "Pending"){
                         nameDiv.textContent = app.first + " " + app.last;
-                        appLink.href = "/application?id="+app.id;
+                        appLink.href = "/adminViewer?id="+app.id+"&pw="+app.password;
                         appLink.textContent = "Click To View";
                         document.getElementById("listap").appendChild(listElement.cloneNode(true))
                     }

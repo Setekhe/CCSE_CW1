@@ -30,6 +30,9 @@ app.get("/dealer", function (req, res) {
 app.get("/application", function (req, res) {
     res.sendFile(__dirname + "/application.html");
 });
+app.get("/adminviewer", function (req, res) {
+    res.sendFile(__dirname + "/adminViewer.html");
+});
 app.get("/admin", function (req, res) {
     res.sendFile(__dirname + "/admin.html");
 });
@@ -109,11 +112,15 @@ app.post("/filelist",function (req, res){
         }
     }));
     if(users[details.ID].password == details.Pass){
-        res.send(
-            (fs.readdirSync(('./application_files/'+details.ID), (err, files) => {
-                return files;
-            }))
-        );
+        try{
+            res.send(
+                (fs.readdirSync(('./application_files/'+details.ID), (err, files) => {
+                    return files;
+                }))
+            );
+        }catch(err){
+            res.send(null)
+        }
     }else{
         res.send(null);
     }
