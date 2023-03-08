@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible">
-        <title>Application</title>
+        <title>Application Viewer</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
@@ -91,6 +91,10 @@
             </div>
         </article>
         <script async defer>
+            const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const userID = parseInt(urlParams.get("id"));
+            const pw = (urlParams.get("pw"))
             async function getJSON(url){
                 return await fetch(url)
                     .then((response) => response.json())
@@ -98,10 +102,6 @@
             }
             async function init(){
                 document.getElementById("body").style = "visibility: visible";
-                const queryString = window.location.search;
-				const urlParams = new URLSearchParams(queryString);
-				const userID = parseInt(urlParams.get("id"));
-                const pw = (urlParams.get("pw"))
                 var filelist;
                 var applicationDetails = await fetch("/loginuser",{
                     method: 'POST',
@@ -192,7 +192,7 @@
                 }
             }
             async function download(file){
-                window.open(("/download/"+(document.getElementById("usern").value)+"/"+file));
+                window.open(("/download/"+userID+"/"+file));
             }
             init();
         </script>

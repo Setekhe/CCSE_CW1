@@ -1,0 +1,17 @@
+RISK IDENTIFICATION
+8.2.2 Identify assets -  We did this with our assets table
+8.2.3 Identify threats - We did this with our threats and vulnerabilities, first working out what a threat was then the vulnerability e.g. our keylogger debate
+8.2.4 Idenitfy current controls (not relevant to asssesment IMO)
+8.2.5 Identify vulnerabilities - We did this with our threats and vulnerabilities, first working out what a threat was then the vulnerability e.g. our keylogger debate
+8.2.6 Identify consequences - We did this with our risk desciption in threats and vulnerabilties 
+
+8.3.2 Assessment of consequences -  Impact table
+8.3.3 Assessment of incident likelihood -  Likelihood table
+8.3.4 Level of risk determination - Risk level in risk register actual
+
+9 Information security risk treatment -  We did this with our proposed controls
+
+Annex E provides risk matrices we could use and cite
+Annex A describes a business process as an asset therefore a key logger would threaten an asset, but idk if its an "information" asset
+Annex C provides extra threats in case we need more
+Annex D extar vulnerabilites linking above

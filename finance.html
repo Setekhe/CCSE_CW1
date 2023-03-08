@@ -101,11 +101,13 @@
         </div>
         </article>
         <div class="popup" id="popop">
-            <div class="centered-text" id="subtext">
-                
+            <div class="centered-text">
+                Your finance request has been sent, we will repsond as soon as we can.
+                <strong id="subtext"></strong>
+                Thank you for shopping with car trader!
             </div>
-            <a class="button button-shop" href="/" style="right:2.5%; bottom: 5%; position: absolute;">
-                Return to Home
+            <a class="button button-shop" href="/application" style="right:2.5%; bottom: 5%; position: absolute; width: 175px;">
+                Go to web portal
             </a>
         </div>
         <script async defer>
@@ -134,7 +136,7 @@
                 var inplist = document.querySelectorAll('input');
                 inplist.forEach(element => {
                     element.style="border-color: black;"
-                    if(!element.value){
+                    if(!element.value&&element.id!="add2"){
                         element.style="border-color: red;"
                         fail=true;
                     }
@@ -182,8 +184,7 @@
                 });
                 var artcl = document.getElementById("artcl");
                 artcl.classList.toggle("not-show");
-                document.getElementById("subtext").textContent = "Your finance request has been sent, we will repsond as soon as we can. Your ID is: "+ (applications.length)+
-                ". Thank you for shopping with car trader!"
+                document.getElementById("subtext").textContent = "Your ID is: "+(applications.length)+".";
                 var artcl = document.getElementById("popop");
                 artcl.classList.toggle("popup-show");
             }
