@@ -6,9 +6,55 @@
   text-decoration: none;
   color: initial;
 }
+.dlbutton{
+  padding: 0;
+  height: 24px;
+  width: 100px;
+  line-height: 24px;
+  position:absolute;
+  top: 50%;
+  right: 0px;
+  transform: translate(0%, -50%);
+  margin: 0;
+  border-radius: 60px;
+  border: none;
+  background: #42C2DF;
+  color: white;
+  font-size: 15px;
+  transition: background 0.4s;
+  cursor: pointer;
+  justify-content: center;
+  display: flex;
+}
+.button-shop {
+  width: 100px;
+  height: 50px;
+  position: relative;
+  border-radius: 60px;
+  border: none;
+  background: #42C2DF;
+  color: white;
+  font-size: 15px;
+  transition: background 0.4s;
+  cursor: pointer;
+  justify-content: center;
+  display: flex;
+  line-height: 50px;	
+}
+.button-shop:hover {
+  background: #3594A9;
+  transition: background 0.4s;
+}
 .article{
-  border: 2px black solid; 
+  border: 2px black solid;
+  border-bottom: 0;
   height: 91vh;
+}
+.centered-el{
+  position:absolute;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%, -50%);
 }
 .not-show{
   opacity: 20%;
@@ -66,25 +112,7 @@
 .popup-show{
   visibility: visible;
 }
-.button-shop {
-  width: 100px;
-  height: 50px;
-  position: relative;
-  border-radius: 60px;
-  border: none;
-  background: #42C2DF;
-  color: white;
-  font-size: 15px;
-  transition: background 0.4s;
-  cursor: pointer;
-  justify-content: center;
-  display: flex;
-  line-height: 50px;	
-}
-.button-shop:hover {
-  background: #3594A9;
-  transition: background 0.4s;
-}
+
 .car-icon{
   max-width: 100%;
   max-height: 100%;

@@ -43,10 +43,15 @@
                 <input type="text" id="empname" name="empname" placeholder="Tesco">
                 <br>
                 <br>
-                
+                <label for="passw">Password :</label>
+                <input type="password" id="passw" name="pasww" placeholder="Password">
+                <br>
+                <br>
+                <label for="passwcon">Condirm Password :</label>
+                <input type="password" id="passwcon" name="paswcon" placeholder="Confirm Password">
             </form> 
         </div>
-        <div class="view-divs" style="float: right; height: 250px;">
+        <div class="view-divs" style="float: right; height: 30%;">
             <form>
                 <label for="add1">Address Line 1:</label>
                 <input type="text" id="add1" name="add1" placeholder="1 Street Road">
@@ -69,6 +74,8 @@
             </form>
             <br>
             <button id="subbut" onclick="submitBut()" class="button-shop">Submit</button>
+            <br>
+            <div id="err" style="color: red;"></div>
         </div>
         <div class="view-divs" style="float: right; height: 50%;">
             <div class="view-divs" style="float: left;">
@@ -115,7 +122,54 @@
                 document.getElementById("car-price").textContent = car.price;
             }
             async function submitBut(){
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const carID = parseInt(urlParams.get("id"));
+                var fail = false;
+                var inplist = document.querySelectorAll('input');
+                inplist.forEach(element => {
+                    element.style="border-color: black;"
+                    if(!element.value){
+                        element.style="border-color: red;"
+                        fail=true;
+                    }
+                });
+                if(fail){document.getElementById("err").textContent="Please fill in highlighted boxes with valid information"; return;}
+                if(!(document.getElementById("passw").value == document.getElementById("passwcon").value)){
+                    document.getElementById("passw").style="border-color: red;";
+                    document.getElementById("passw").style="border-color: red;";
+                    document.getElementById("err").textContent="Passwords don't match"; 
+                    return;
+                }
                 var applications = await this.getJSON("/applications.json")
+                var success = await fetch("/apply",{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',   
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "id": applications.length,
+                        "first": document.getElementById("fname").value,
+                        "last": document.getElementById("lname").value,
+                        "age": document.getElementById("age").value,
+                        "gender": document.getElementById("gender").value,
+                        "tax": document.getElementById("tax").value,
+                        "empyr": document.getElementById("empyr").value,
+                        "empname": document.getElementById("empname").value,
+                        "add1": document.getElementById("add1").value,
+                        "add2": document.getElementById("add2").value,
+                        "add3": document.getElementById("add3").value,
+                        "add4": document.getElementById("add4").value,
+                        "postcode": document.getElementById("postcode").value,
+                        "password": document.getElementById("passw").value,
+                        "carid":carID,
+                        "approval": "Pending"
+                    }),
+                })
+                .then((response) => response.text())
+                .then((data) => {return data;});
+                console.log("hmmm")
                 document.getElementById("subbut").disabled=true;
                 var inplist = document.querySelectorAll('input');
                 inplist.forEach(element => {
@@ -123,7 +177,7 @@
                 });
                 var artcl = document.getElementById("artcl");
                 artcl.classList.toggle("not-show");
-                document.getElementById("subtext").textContent = "Your finance request has been sent, we will repsond as soon as we can. Your ID is: "+ applications.length+
+                document.getElementById("subtext").textContent = "Your finance request has been sent, we will repsond as soon as we can. Your ID is: "+ (applications.length)+
                 ". Thank you for shopping with car trader!"
                 var artcl = document.getElementById("popop");
                 artcl.classList.toggle("popup-show");

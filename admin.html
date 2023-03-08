@@ -91,8 +91,10 @@
                 var stock = await getJSON("/stock.json")
                 var sales = await getJSON("/sales.json")
                 //lists applications
+                console.log(applications);
                 applications.forEach(app => {
-                    if(app.approval == false){
+                    console.log(app.approval);
+                    if(app.approval == "pending"){
                         nameDiv.textContent = app.first + " " + app.last;
                         appLink.href = "/application?id="+app.id;
                         appLink.textContent = "Click To View";
@@ -143,7 +145,7 @@
                 });             
             }
             async function loginBut(){  
-                var success = await fetch("/login",{
+                var success = await fetch("/loginadmin",{
                     method: 'POST',
                     headers: {
                     'Accept': 'application/json',   

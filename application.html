@@ -8,13 +8,217 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/main.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
+    <body style="visibility:hidden;" id="body">
         <header>
     		<h2 class="pageTitle">Car Trader</h2>
     	</header>
-        <article class="article">
-            
+        <article class="article" id="article">
+            <div class="view-divs" style="float: left; height: 40%;">
+                <form>
+                    <div id="fname">First name: </div>
+                    <br>
+                    <br>
+                    <div id="lname">Last name: </div>
+                    <br>
+                    <br>
+                    <div id="age">Age: </div>
+                    <br>
+                    <br>
+                    <div id="gender">Gender: </div>
+                    <br>
+                    <br>
+                    <div id="tax">Income After Tax: </div>
+                    <br>
+                    <br>
+                    <div id="empyr">Years of Consecutive Employment: </div>
+                    <br>
+                    <br>
+                    <div id="empname">Employer : </div>
+                </form> 
+            </div>
+            <div class="view-divs" style="float: right; height: 40%;">
+                <form>
+                    <div id="add1">Address Line 1: </div>
+                    <br>
+                    <br>
+                    <div id="add2">Address Line 2: </div>
+                    <br>
+                    <br>
+                    <div id="add3">Address Line 3: </div>
+                    <br>
+                    <br>
+                    <div id="add4">Address Line 4: </div>
+                    <br>
+                    <br>
+                    <div id="postcode">Postcode: </div>
+                </form>
+                <br>
+            </div>
+            <div class="view-divs" style="float: right; height: 50%;">
+                <div class="view-divs" style="float: left;">
+                    <h1 class="car-name" id="car-title"></h1>
+                    <h2 class="car-subtitle">Description: </h2>
+                    <p id="car-description"></p>
+                    <strong>Stock Left : </strong>
+                    <span id="car-stock"></span>
+                    <br>
+                    <strong>Price : £</strong>
+                    <span id="car-price"></span>
+                </div>
+                <div class="view-divs" style="float: right;">
+                    <div class="view-box">
+                        <img class="view-car" id="car-image">
+                    </div>
+                </div>
+            </div>
+            <div class="view-divs" style="float: left; height: 38%;">
+                <h1 id="status">Application Status: </h1>
+                <div style="height: 40px;">
+                    <div class="view-divs" style="float: left;">
+                        <h2 id="status">Files: </h2>
+                    </div>
+                    <div class="view-divs" style="float: right;">
+                        <form id="upform" enctype="multipart/form-data">
+                            <label for="file">Choose file to upload</label>
+                            <input type="file" id="file-in" name="filesarr" multiple />
+                            <button onclick="upload()">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <ul id="listap" class="list-outer">
+                </ul>
+            </div>
         </article>
-        <script src="" async defer></script>
+        <div class="popup popup-show" id="popop">
+            <div class="centered-text" id="subtext">
+                <form>
+                    <div id="Error" style="color:red;"></div>
+                    <br>
+                    <label for="id">ID Number:</label>
+                    <input type="text" id="usern" name="usern" placeholder="Admin">
+                    <br>
+                    <br>
+                    <label for="passw">Password:</label>
+                    <input type="password" id="passwin" name="passw" placeholder="Password">
+            </div>
+            <br>
+            <button type="button" class="button-shop" onclick="loginBut()" style="right:2.5%; bottom: 5%; position: absolute;">
+                Login
+            </button>
+        </div>  
+        <script async defer>
+            async function getJSON(url){
+                return await fetch(url)
+                    .then((response) => response.json())
+                    .then((data) => {return data;});
+            }
+            async function init(applicationDetails,filelist){
+                const listElement=document.createElement("li");
+                listElement.className = "list-el";
+                const listDiv=document.createElement("div");
+                const fileDiv=document.createElement("div");
+                fileDiv.style="float: left; padding: 0;"
+                fileDiv.className = "view-divs"
+                const dlButton=document.createElement("button");
+                dlButton.className = "dlbutton"
+                dlButton.textContent= "Download";
+                listElement.appendChild(listDiv);
+                listDiv.style="position:relative;"
+                listDiv.appendChild(fileDiv);
+                listDiv.appendChild(dlButton);
+                applicationDetails=JSON.parse(applicationDetails);
+                document.getElementById("fname").textContent += applicationDetails.first;
+                document.getElementById("lname").textContent += applicationDetails.last;
+                document.getElementById("age").textContent += applicationDetails.age;
+                document.getElementById("gender").textContent += applicationDetails.gender;
+                document.getElementById("tax").textContent += applicationDetails.tax;
+                document.getElementById("empyr").textContent += applicationDetails.empyr;
+                document.getElementById("empname").textContent += applicationDetails.empname;
+                document.getElementById("add1").textContent += applicationDetails.add1;
+                document.getElementById("add2").textContent += applicationDetails.add2;
+                document.getElementById("add3").textContent += applicationDetails.add3;
+                document.getElementById("add4").textContent += applicationDetails.add4;
+                document.getElementById("postcode").textContent += applicationDetails.postcode;
+                document.getElementById("status").textContent += applicationDetails.approval;
+                var cars = await this.getJSON("/stock.json");
+                const car = cars.find((car) => car.id === applicationDetails.carid);  
+                document.getElementById("car-title").textContent = car.car;
+                document.getElementById("car-image").src = car.image;
+                document.getElementById("car-description").textContent = car.description;
+                document.getElementById("car-stock").textContent = car.stock;
+                document.getElementById("car-price").textContent = car.price;
+                filelist.forEach(file => {
+                    fileDiv.textContent = file;
+                    fileDiv.style="cursor: pointer; padding: 0px;";
+                    dlButton.id= "Download"+file;
+                    document.getElementById("listap").appendChild(listElement.cloneNode(true));
+                });
+                filelist.forEach(file => {
+                    document.getElementById(("Download"+file)).onclick=function downloader(){download(file)};
+                });
+                var form = document.getElementById("upform");
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault()
+                    upload()
+                })
+            }
+            async function download(file){
+                window.open(("/download/"+(document.getElementById("usern").value)+"/"+file));
+            }
+            const upload = async () => {
+                const myFiles = document.getElementById('file-in').files
+                console.log(myFiles);
+                const formData = new FormData()
+                formData.append('filesarr',myFiles)
+                const options ={
+                    method: 'POST',
+                    body: formData
+                };
+                if (options && options.headers) {
+                    delete options.headers['Content-Type'];
+                }
+                fetch(('/upload/'+document.getElementById("usern").value), options);
+
+            }
+            async function loginBut(){
+                var applicationDetails = await fetch("/loginuser",{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',   
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "ID": document.getElementById("usern").value,
+                        "Pass" : document.getElementById("passwin").value
+                    }),
+                })
+                .then((response) => response.text())
+                .then((data) => {return data;});
+                if(!applicationDetails == "UP"){
+                    console.log("err");
+                }else if(applicationDetails == "UP"){
+                    document.getElementById("Error").textContent="ID or password wrong. Please re-enter a correct combination.";
+                }else if(applicationDetails){
+                    var artcl = document.getElementById("popop");
+                    artcl.classList.toggle("popup-show");
+                    document.getElementById("body").style = "visibility: visible"
+                    var filelist = await fetch("/filelist",{
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',   
+                        'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "ID": document.getElementById("usern").value,
+                            "Pass" : document.getElementById("passwin").value
+                        }),
+                    })
+                    .then((response) => response.text())
+                    .then((data) => {return data;});
+                    filelist = filelist.replaceAll('[','').replaceAll(']','').replaceAll('"','').split(',');
+                    init(applicationDetails, filelist);
+                };
+            }
+        </script>
     </body>
 </html>
