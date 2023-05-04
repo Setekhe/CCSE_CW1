@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 const multer = require("multer");
 const path = require('path');
-
+const port = process.env.port || 8080;
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
@@ -146,7 +146,7 @@ app.post("/upload/:id", upload.array('files'),function (req, res){
 } ,);
   
 ////////////////starts the server
-app.listen(6060, function () {
-  console.log("Server is running on http://localhost:6060/");
+app.listen(port, function () {
+  console.log("Server is running on http://localhost:8080/");
 });
 
