@@ -17,5 +17,6 @@ steps:
 
 - script: |
     npm install
-    node app.js
+    npm install express
+    npm install multer
   displayName: 'npm install and run'
