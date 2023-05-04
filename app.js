@@ -146,7 +146,7 @@ app.post("/upload/:id", upload.array('files'),function (req, res){
 } ,);
   
 ////////////////starts the server
-app.listen(8080, function () {
-  console.log("Server is running on http://localhost:8080/");
+app.listen(6060, function () {
+  console.log("Server is running on http://localhost:6060/");
 });
 
